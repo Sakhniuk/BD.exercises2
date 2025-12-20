@@ -223,12 +223,12 @@ FROM (
 ) AS personal
 JOIN (
     SELECT 
-      st.group_id, 
-      AVG(e.grade) AS grp_avg
-    FROM student st
-    JOIN enrolment e ON st.student_id = e.student_id
-    WHERE e.grade IS NOT NULL
-    GROUP BY st.group_id
+        stud_table.group_id, 
+        AVG(enr_table.grade) AS grp_avg
+    FROM student stud_table
+    JOIN enrolment enr_table ON stud_table.student_id = enr_table.student_id
+    WHERE enr_table.grade IS NOT NULL
+    GROUP BY stud_table.group_id
 ) AS group_data ON personal.group_id = group_data.group_id;
 
 
