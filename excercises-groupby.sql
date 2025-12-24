@@ -184,11 +184,7 @@ SELECT
     stud.surname || ' ' || stud.name AS student_fio,
     grp.name AS group_name,
     COUNT(enrol.grade) AS count_grades,
-    ROUND(AVG(enrol.grade), 2) AS average_score,
-    CASE 
-     WHEN AVG(enrol.grade) >= 60 THEN 'Успішно'
-     ELSE 'Неуспішно'
-    END AS status
+    ROUND(AVG(enrol.grade), 2) AS average_score
 FROM student stud
 JOIN student_group grp ON stud.group_id = grp.group_id
 JOIN enrolment enrol ON stud.student_id = enrol.student_id
@@ -202,12 +198,7 @@ SELECT
     personal.group_title,
     ROUND(personal.st_avg, 2) AS st_grade,
     ROUND(group_data.grp_avg, 2) AS grp_grade,
-    ROUND(personal.st_avg - group_data.grp_avg, 2) AS diff,
-    CASE 
-     WHEN personal.st_avg > group_data.grp_avg THEN 'Вище середнього'
-     WHEN personal.st_avg < group_data.grp_avg THEN 'Нижче середнього'
-     ELSE 'На рівні середнього'
-    END AS label
+    ROUND(personal.st_avg - group_data.grp_avg, 2) AS diff
 FROM (
     SELECT 
       stud.student_id,
@@ -229,7 +220,8 @@ JOIN (
     JOIN enrolment enr_table ON stud_table.student_id = enr_table.student_id
     WHERE enr_table.grade IS NOT NULL
     GROUP BY stud_table.group_id
-) AS group_data ON personal.group_id = group_data.group_id;
+) AS group_data 
+ON personal.group_id = group_data.group_id;
 
 
 SELECT 
